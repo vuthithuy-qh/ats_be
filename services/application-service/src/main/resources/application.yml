@@ -1,17 +1,17 @@
 server:
-  port: 8081
+  port: 8083
 
 spring:
   application:
-    name: job-service
+    name: application-service
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;databaseName=Job_ats;encrypt=false;
+    url: jdbc:sqlserver://localhost:1433;databaseName=Application_ats;encrypt=false;
     username: sa
     password: 1234
 
     hikari:
-      pool-name: JobHikariPool
+      pool-name: ApplicationHikariPool
       maximum-pool-size: 10
       minimum-idle: 2
       connection-timeout: 30000
@@ -27,3 +27,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
     open-in-view: false
+
+# URL của job-service để kiểm tra job tồn tại
+job-service:
+  url: http://localhost:8081
