@@ -17,16 +17,20 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JobServiceClient jobServiceClient;
-
+  
     @Override
     public ApplicationResponse createApplication(CreateApplicationRequest request) {
 
         // 1. Gọi Job Service kiểm tra job có tồn tại không
-        boolean jobExists = jobServiceClient.jobExists(request.jobId());
-        if (!jobExists) {
-            throw new IllegalArgumentException("Job not found with id: " + request.jobId());
-        }
+        try{
+            jobServiceClient.getJobById(request.jobId()); //feign tuwj throw neu 404
 
+
+        }catch(feign.FeignException.NotFound e){
+            throw new IllegalArgumentException(
+                "Job not found with id: " + request.jobId());   
+
+        }
         // 2. Kiểm tra candidate đã apply cho job này chưa
         boolean alreadyApplied = applicationRepository
                 .existsByJobIdAndCandidateId(request.jobId(), request.candidateId());

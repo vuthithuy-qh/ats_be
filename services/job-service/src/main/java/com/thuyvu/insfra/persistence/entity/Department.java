@@ -19,7 +19,6 @@ import java.util.UUID;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "department_name", nullable = false, length = 255)

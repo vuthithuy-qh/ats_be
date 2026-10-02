@@ -18,14 +18,9 @@ import java.util.UUID;
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    /**
-     * Job belongs to one Department.
-     *
-     * jobs.department_id -> departments.id
-     */
+ 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
             name = "department_id",

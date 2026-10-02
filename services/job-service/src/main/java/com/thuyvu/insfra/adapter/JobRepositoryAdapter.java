@@ -3,6 +3,7 @@ package com.thuyvu.insfra.adapter;
 import com.thuyvu.domain.aggregate.JobAggregate;
 import com.thuyvu.domain.model.JobStatus;
 import com.thuyvu.domain.repository.JobRepository;
+import com.thuyvu.insfra.persistence.JpaDepartmentRepository;
 import com.thuyvu.insfra.persistence.JpaJobRepository;
 import com.thuyvu.insfra.persistence.entity.Department;
 import com.thuyvu.insfra.persistence.entity.Job;
@@ -18,11 +19,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JobRepositoryAdapter implements JobRepository {
 
-    private final JpaJobRepository jpaJobRepository; // ịnect data spring JPA
+    private final JpaJobRepository jpaJobRepository;
+    private final JpaDepartmentRepository jpaDepartmentRepository;// ịnect data spring JPA
 
     @Override
     public JobAggregate save(JobAggregate aggregate) {
-        Job entity = toEntity(aggregate);
+        Department department = jpaDepartmentRepository.findById(aggregate.getDepartmentId())
+                .orElseThrow();
+        
+        Job entity = toEntity(aggregate, department);
+
         Job saved = jpaJobRepository.save(entity);
         return toAggregate(saved);
     }
@@ -36,10 +42,7 @@ public class JobRepositoryAdapter implements JobRepository {
 
 
 
-    private Job toEntity(JobAggregate agg) {
-        Department dept = new Department();
-        dept.setId(agg.getDepartmentId());
-
+    private Job toEntity(JobAggregate agg, Department dept) {
         return Job.builder()
                 .id(agg.getId())
                 .title(agg.getTitle())
