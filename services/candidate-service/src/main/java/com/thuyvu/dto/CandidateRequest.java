@@ -17,9 +17,9 @@ public class CandidateRequest {
     @NotBlank
     private String fullName;
     @NotBlank
-    @Pattern(regexp = "\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b", message = "Email is not valid format")
+    @jakarta.validation.constraints.Email(message = "Email is not valid format")
     private String email;
-    @Pattern(regexp = "~[0-9]{10}$", message = "Phone number is not valid")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number is not valid")
     private String phone;
     private String source;
     private String utmSource;

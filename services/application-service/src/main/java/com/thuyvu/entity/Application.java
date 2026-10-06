@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,34 +27,32 @@ public class Application {
     @Column(name = "candidate_id", nullable = false)
     private UUID candidateId;
 
-    @Column(name = "cover_letter", columnDefinition = "TEXT")
-    private String coverLetter;
+    @Column(name = "cv_id")
+    private UUID cvId;
 
-    @Column(name = "resume_url", length = 500)
-    private String resumeUrl;
+    @Column(name = "department_id")
+    private UUID departmentId;
 
-    @Column(length = 50)
+    @Column(name = "transferred_from")
+    private Long transferredFrom;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pipeline_stage_id", nullable = false)
+    private PipelineStage pipelineStage;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
     private ApplicationStatus status;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    @Column(name = "applied_at", nullable = false)
+    private OffsetDateTime appliedAt;
 
-    @Column(name = "updated_at")
-    private OffsetDateTime updatedAt;
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StageTransition> stageTransitions = new ArrayList<>();
 
-    @PrePersist
-    protected void onCreate() {
-        OffsetDateTime now = OffsetDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-        if (this.status == null) {
-            this.status = ApplicationStatus.SUBMITTED;
-        }
-    }
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EvaluationNote> evaluationNotes = new ArrayList<>();
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = OffsetDateTime.now();
-    }
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interview> interviews = new ArrayList<>();
 }

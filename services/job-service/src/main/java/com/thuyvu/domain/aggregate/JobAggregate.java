@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,6 +27,8 @@ public final class JobAggregate {
     private final LocalDate deadline;
     private final List<UUID> skillIds;
     private JobStatus status;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updateAt;
 
     private JobAggregate(UUID id,
                          String title,
@@ -100,13 +103,17 @@ public final class JobAggregate {
                                             String currency,
                                             LocalDate deadline,
                                             List<UUID> skillIds,
-                                            JobStatus status) {
+                                            JobStatus status,
+                                            OffsetDateTime createdAt,
+                                            OffsetDateTime updateAt) {
         JobAggregate agg = new JobAggregate(
                 id, title, description, departmentId, recruiterId,
                 location, employmentType, workMode,
                 salaryMin, salaryMax, currency, deadline, skillIds
         );
         agg.status = status;
+        agg.createdAt = createdAt;
+        agg.updateAt = updateAt;
         return agg;
     }
 

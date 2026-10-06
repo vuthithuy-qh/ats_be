@@ -15,9 +15,9 @@ public interface CandidateService {
 
     CandidateResponse getCandidateById(UUID candidateId);
 
-    Candidates getCandidateByEmail(String email);
+    CandidateResponse  getCandidateByEmail(String email);
 
-    Candidates updateCandidate(UUID candidateId, CandidateRequest request);
+    CandidateResponse  updateCandidate(UUID candidateId, CandidateRequest request);
 
     List<UUID> getCandidateSkills(UUID candidateId);
 }

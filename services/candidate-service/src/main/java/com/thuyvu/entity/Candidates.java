@@ -33,6 +33,7 @@ public class Candidates {
 
     private String oauthProviderId;
 
+    @Enumerated(EnumType.STRING)
     private  CandidateStatus status;
 
     private String phone;

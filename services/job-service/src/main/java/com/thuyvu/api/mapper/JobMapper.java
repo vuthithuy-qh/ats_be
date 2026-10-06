@@ -32,8 +32,8 @@ public class JobMapper {
                 agg.getId(),
                 agg.getTitle(),
                 agg.getDescription(),
-                null,  // companyId - not available in aggregate
-                null,  // recruiterId mapped as UUID in response but Long in aggregate
+                agg.getDepartmentId(),  // companyId - not available in aggregate
+                agg.getRecruiterId(),  // recruiterId mapped as UUID in response but Long in aggregate
                 agg.getLocation(),
                 agg.getEmploymentType(),
                 agg.getWorkMode(),
@@ -43,8 +43,8 @@ public class JobMapper {
                 agg.getStatus().name(),
                 agg.getDeadline(),
                 agg.getSkillIds(),
-                null,  // createdAt
-                null   // updatedAt
+                agg.getCreatedAt(),
+                agg.getUpdateAt()
         );
     }
 }

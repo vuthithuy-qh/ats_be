@@ -1,0 +1,21 @@
+package com.thuyvu.client.job;
+
+import com.thuyvu.dto.JobView;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.UUID;
+
+
+
+@FeignClient(name = "job-service", url= "${job-service.url}")
+public interface JobClient {
+
+    @GetMapping(path = "/api/v1/jobs/{id}")
+    JobView findById(@PathVariable("id") UUID id);
+
+
+
+
+}

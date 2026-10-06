@@ -31,3 +31,6 @@ spring:
 # URL của job-service để kiểm tra job tồn tại
 job-service:
   url: http://localhost:8081
+
+candidate-service:
+  url: http://localhost:8082

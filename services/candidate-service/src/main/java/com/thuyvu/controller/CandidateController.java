@@ -33,9 +33,9 @@ public class CandidateController {
     }
 
     @GetMapping
-    public ResponseEntity<Candidates> getCandidateByEmail(@RequestParam("email") String email) {
-        Candidates candidate = candidateService.getCandidateByEmail(email);
-        return ResponseEntity.ok(candidate);
+    public ResponseEntity<CandidateResponse> getCandidateByEmail(@RequestParam("email") String email) {
+        CandidateResponse response = candidateService.getCandidateByEmail(email);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{candidateId}")

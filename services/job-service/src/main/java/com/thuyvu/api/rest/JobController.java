@@ -22,9 +22,7 @@ public class JobController {
     private final CreateJobPort createJobPort;
     private final GetJobPort getJobPort;
 
-    /**
-     * POST /api/v1/jobs - Tạo job mới (status = DRAFT)
-     */
+    
     @PostMapping
     public ResponseEntity<JobResponse> createJob(@Valid @RequestBody CreateJobRequest request) {
         JobAggregate created = createJobPort.execute(JobMapper.toCommand(request));
@@ -32,10 +30,7 @@ public class JobController {
                 .body(JobMapper.toResponse(created));
     }
 
-    /**
-     * GET /api/v1/jobs/{jobId} - Lấy thông tin job theo ID
-     * Được application-service gọi để kiểm tra job tồn tại khi tạo application
-     */
+    
     @GetMapping("/{jobId}")
     public ResponseEntity<JobResponse> getJobById(@PathVariable("jobId") UUID jobId) {
         JobAggregate job = getJobPort.execute(jobId);

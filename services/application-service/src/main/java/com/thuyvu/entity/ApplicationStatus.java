@@ -2,9 +2,11 @@ package com.thuyvu.entity;
 
 public enum ApplicationStatus {
     SUBMITTED,
-    UNDER_REVIEW,
-    INTERVIEW,
+    IN_REVIEW,
+    SHORTLISTED,
+    INTERVIEWING,
     OFFERED,
+    HIRED,
     REJECTED,
     WITHDRAWN
 }

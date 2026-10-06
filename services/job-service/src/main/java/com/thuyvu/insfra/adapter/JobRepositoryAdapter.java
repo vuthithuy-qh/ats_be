@@ -26,11 +26,11 @@ public class JobRepositoryAdapter implements JobRepository {
     public JobAggregate save(JobAggregate aggregate) {
         Department department = jpaDepartmentRepository.findById(aggregate.getDepartmentId())
                 .orElseThrow();
-        
+
         Job entity = toEntity(aggregate, department);
 
-        Job saved = jpaJobRepository.save(entity);
-        return toAggregate(saved);
+        Job saved = jpaJobRepository.save(entity); // @PrePersist chạy ở đây, set createdAt
+        return toAggregate(saved); // doc createdAt tu entity vua luu
     }
 
     @Override
@@ -77,7 +77,9 @@ public class JobRepositoryAdapter implements JobRepository {
                 entity.getCurrency(),
                 entity.getDeadline(),
                 List.of(),
-                JobStatus.valueOf(entity.getStatus().name())
+                JobStatus.valueOf(entity.getStatus().name()),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
     }
 }

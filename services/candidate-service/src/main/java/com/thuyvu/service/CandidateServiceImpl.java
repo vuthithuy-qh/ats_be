@@ -2,10 +2,7 @@ package com.thuyvu.service;
 
 import com.thuyvu.dto.CandidateRequest;
 import com.thuyvu.dto.CandidateResponse;
-import com.thuyvu.entity.CandidateSkillId;
-import com.thuyvu.entity.CandidateSkills;
-import com.thuyvu.entity.Candidates;
-import com.thuyvu.entity.Skills;
+import com.thuyvu.entity.*;
 import com.thuyvu.mapper.CandidateMapper;
 import com.thuyvu.repository.CandidateRepository;
 import com.thuyvu.repository.CandidateSkillsRepository;
@@ -58,6 +55,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CandidateResponse getCandidateById(UUID candidateId) {
 
          Candidates candidate = candidateRepository.findById(candidateId).orElseThrow(()
@@ -67,13 +65,15 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Candidates getCandidateByEmail(String email) {
-        return candidateRepository.findByEmail(email)
+    @Transactional(readOnly = true)
+    public CandidateResponse  getCandidateByEmail(String email) {
+        Candidates candidate =  candidateRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy ứng viên với email: " + email));
+        return candidateMapper.toDto(candidate);
     }
 
     @Override
-    public Candidates updateCandidate(UUID candidateId, CandidateRequest request) {
+    public CandidateResponse updateCandidate(UUID candidateId, CandidateRequest request) {
         Candidates existingCandidate = candidateRepository.findById(candidateId).orElseThrow(()-> new RuntimeException("ko tim thay "));
 
         if(request.getSkillIds() != null){
@@ -94,10 +94,12 @@ public class CandidateServiceImpl implements CandidateService {
             existingCandidate.getCandidateSkills().addAll(newSkills);
         }
 
-        return candidateRepository.save(existingCandidate);
+        Candidates candidate =  candidateRepository.save(existingCandidate);
+        return candidateMapper.toDto(candidate);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UUID> getCandidateSkills(UUID candidateId) {
         Candidates candidate = candidateRepository.findById(candidateId).orElseThrow(()-> new RuntimeException("ko tim thay "));
 
@@ -127,6 +129,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .utmSource(request.getUtmSource())
                 .utmMedium(request.getUtmMedium())
                 .utmCampaign(request.getUtmCampaign())
+                .status(CandidateStatus.ACTIVE)
                 .build();
 
 
